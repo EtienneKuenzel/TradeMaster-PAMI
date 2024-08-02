@@ -1,5 +1,5 @@
 task_name = "algorithmic_trading"
-dataset_name = "BTC"
+dataset_name = "AAssPL"
 optimizer_name = "adam"
 loss_name = "mse"
 net_name = "deepscalper"
