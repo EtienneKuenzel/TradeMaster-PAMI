@@ -26,7 +26,7 @@ set_seed(2023)
 
 
 parser = argparse.ArgumentParser(description='Download Alpaca Datasets')
-parser.add_argument("--config", default=osp.join(ROOT,"Trademaster",  "configs", "portfolio_management", "high_frequency_trading_BTC_dqn_dqn_adam_mse.py"),
+parser.add_argument("--config", default=osp.join(ROOT,"Trademaster",  "configs", "portfolio_management", "portfolio_management_dj30_eiie_eiie_adam_mse.py"),
                     help="download datasets config file path")
 parser.add_argument("--task_name", type=str, default="train")
 args, _ = parser.parse_known_args()
@@ -70,3 +70,5 @@ trainer.train_and_valid()
 
 trainer.test();
 plot(trainer.test_environment.save_asset_memory(),alg="EIIE")
+
+
