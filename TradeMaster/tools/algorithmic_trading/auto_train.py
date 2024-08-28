@@ -19,7 +19,6 @@ from trademaster.losses.builder import build_loss
 from trademaster.trainers.builder import build_trainer
 from trademaster.transition.builder import build_transition
 import pdb
-import optuna
 from shutil import copyfile
 import joblib
 
@@ -28,8 +27,7 @@ set_seed(2023)
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Download Alpaca Datasets')
-    parser.add_argument("--config", default=osp.join(ROOT, "configs", "algorithmic_trading", "algorithmic_trading_BTC_dqn_dqn_adam_mse.py"),
-                        help="download datasets config file path")
+    parser.add_argument("--config", default=osp.join(ROOT, "configs", "algorithmic_trading", "algorithmic_trading_BTC_dqn_dqn_adam_mse.py"), help="download datasets config file path")
     parser.add_argument("--task_name", type=str, default="train")
     parser.add_argument("--test_style", type=str, default='-1')
     parser.add_argument("--auto_tuning", default=False, type=bool)
