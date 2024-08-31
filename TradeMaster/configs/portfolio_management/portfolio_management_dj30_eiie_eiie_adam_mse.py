@@ -9,11 +9,11 @@ work_dir = f"work_dir/{task_name}_{dataset_name}_{net_name}_{agent_name}_{optimi
 _base_ = [
     f"../_base_/datasets/{task_name}/{dataset_name}.py",
     f"../_base_/environments/{task_name}/env.py",
-    f"../_base_/agents/{task_name}/{agent_name}.py",
-    f"../_base_/trainers/{task_name}/eiie_trainer.py",
+    f"../_base_/agents/{task_name}/{agent_name}.py",#
+    f"../_base_/trainers/{task_name}/eiie_trainer.py",#
     f"../_base_/losses/{loss_name}.py",
     f"../_base_/optimizers/{optimizer_name}.py",
-    f"../_base_/nets/{net_name}.py",
+    f"../_base_/nets/{net_name}.py",#
     f"../_base_/transition/transition.py"
 ]
 
@@ -44,7 +44,7 @@ agent = dict(
 
 trainer = dict(
     type='PortfolioManagementEIIETrainer',
-    epochs=2,
+    epochs=1,
     work_dir=work_dir,
     if_remove=False )
 

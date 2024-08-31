@@ -37,7 +37,7 @@ class AlgorithmicTradingEnvironment(Environments):
 
         ##get data time interval
         self.initial_amount = get_attr(self.dataset, "initial_amount", 100000)
-        self.transaction_cost_pct = get_attr(self.dataset, "transaction_cost_pct", 0.001)
+        self.transaction_cost_pct = get_attr(self.dataset, "transaction_cost_pct", 0)
         self.tech_indicator_list = get_attr(self.dataset, "tech_indicator_list", [])
         self.forward_num_day = get_attr(self.dataset, "forward_num_day", [])
         self.backward_num_day = get_attr(self.dataset, "backward_num_day", [])
@@ -94,6 +94,7 @@ class AlgorithmicTradingEnvironment(Environments):
         self.terminal = False
         self.portfolio_value = self.initial_amount
         self.asset_memory = [self.initial_amount]
+
         self.day = self.backward_num_day
         self.data = self.df.iloc[self.day - self.backward_num_day:self.day, :]
         self.date_memory = [self.data.date.unique()[-1]]
@@ -115,8 +116,7 @@ class AlgorithmicTradingEnvironment(Environments):
 
     def step(self, action):
         # here the action refer to the amount of changed position
-        self.terminal = self.day >= len(
-            self.df.index.unique()) - self.forward_num_day - 1
+        self.terminal = self.day >= len(self.df.index.unique()) - self.forward_num_day - 1
         if self.terminal:
             if self.task.startswith("test_dynamic"):
                 print(f'Date from {self.start_date} to {self.end_date}')
@@ -246,6 +246,7 @@ class AlgorithmicTradingEnvironment(Environments):
                                                 (new_price - old_price))
             self.portfolio_value = compound[0] + compound[1] * (new_price)
             self.asset_memory.append(self.portfolio_value)
+
             self.future_data = self.df.iloc[self.day - 1:self.day +
                                                          self.forward_num_day, :]
             self.date_memory.append(self.data.date.unique()[-1])

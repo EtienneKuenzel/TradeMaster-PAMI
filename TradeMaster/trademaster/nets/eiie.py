@@ -14,7 +14,6 @@ class EIIEConv(Net):
                  kernel_size = 3,
                  dims = (32, )):
         super(EIIEConv, self).__init__()
-
         self.kernel_size = kernel_size
         self.time_steps = time_steps
 

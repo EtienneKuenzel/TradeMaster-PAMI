@@ -277,6 +277,7 @@ class AlgorithmicTradingTrainer(Trainer):
         state = self.test_environment.reset()
 
         episode_reward_sum = 0
+        arrayday = []
         while True:
             tensor_state = torch.as_tensor(state, dtype=torch.float32, device=self.device).unsqueeze(0)
             tensor_action = self.agent.act(tensor_state)
@@ -286,6 +287,7 @@ class AlgorithmicTradingTrainer(Trainer):
                 0]  # not need detach(), because using torch.no_grad() outside
             state, reward, done, save_dict = self.test_environment.step(action)
             episode_reward_sum += reward
+            arrayday.append(self.test_environment.day)
             if done:
                 # print("Test Best Episode Reward Sum: {:04f}".format(episode_reward_sum))
                 plot_metric_against_baseline(total_asset=save_dict['total_assets'],
@@ -300,6 +302,8 @@ class AlgorithmicTradingTrainer(Trainer):
         df = pd.DataFrame()
         df["daily_return"] = daily_return
         df["total assets"] = assets
+        df["day"] = arrayday
+
         df.to_csv(os.path.join(self.work_dir, "test_result.csv"), index=False)
         return daily_return
 

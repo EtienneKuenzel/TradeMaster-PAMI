@@ -1,5 +1,5 @@
 task_name = "algorithmic_trading"
-dataset_name = "dj30"
+dataset_name = "BTC"
 optimizer_name = "adam"
 loss_name = "mse"
 net_name = "deepscalper"
@@ -20,10 +20,10 @@ _base_ = [
 batch_size = 64
 data = dict(
     type='AlgorithmicTradingDataset',
-    data_path='data/algorithmic_trading/dj30',
-    train_path='data/algorithmic_trading/dj30/train.csv',
-    valid_path='data/algorithmic_trading/dj30/valid.csv',
-    test_path='data/algorithmic_trading/dj30/test.csv',
+    data_path='data/algorithmic_trading/BTC',
+    train_path='data/algorithmic_trading/BTC/train.csv',
+    valid_path='data/algorithmic_trading/BTC/valid.csv',
+    test_path='data/algorithmic_trading/BTC/test.csv',
     test_dynamic_path= "",#'data/algorithmic_trading/BTC/Market_Dynamics_Model/BTC/test_labeled_slice_and_merge_model_3dynamics_minlength12_quantile_labeling.csv',
     tech_indicator_list=[
         'high', 'low', 'open', 'close', 'adjcp', 'zopen', 'zhigh', 'zlow',
@@ -62,8 +62,8 @@ trainer = dict(
     if_keep_save=True,
     if_over_write=False,
     if_save_buffer=False,)
+
 loss = dict(type='MSELoss')
 optimizer = dict(type='Adam', lr=0.001)
-act = dict(
-    type='QNet', state_dim=82, action_dim=3, dims=(64, 32), explore_rate=0.25)
+act = dict(type='QNet', state_dim=82, action_dim=3, dims=(64, 64), explore_rate=0.25)
 cri = None

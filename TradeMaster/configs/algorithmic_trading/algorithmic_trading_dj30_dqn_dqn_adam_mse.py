@@ -1,5 +1,5 @@
 task_name = "algorithmic_trading"
-dataset_name = "dj30"
+dataset_name = "BTC"
 optimizer_name = "adam"
 loss_name = "mse"
 auxiliry_loss_name = "KLdiv"
@@ -20,10 +20,10 @@ _base_ = [
 batch_size = 512
 data = dict(
     type='AlgorithmicTradingDataset',
-    data_path='data/algorithmic_trading/dj30',
-    train_path='data/algorithmic_trading/dj30/train.csv',
-    valid_path='data/algorithmic_trading/dj30/valid.csv',
-    test_path='data/algorithmic_trading/sse50/test.csv',
+    data_path='data/algorithmic_trading/BTC',
+    train_path='data/algorithmic_trading/BTC/BTC_smooth_exp_avg/BTC_train_exponantial_annealing.csv',
+    valid_path='data/algorithmic_trading/BTC/valid.csv',
+    test_path='data/algorithmic_trading/BTC/test.csv',
     tech_indicator_list=[
         'high', 'low', 'open', 'close', 'adjcp', 'zopen', 'zhigh', 'zlow',
         'zadjcp', 'zclose', 'zd_5', 'zd_10', 'zd_15', 'zd_20', 'zd_25', 'zd_30'
@@ -62,5 +62,5 @@ trainer = dict(
     if_save_buffer=False,)
 loss = dict(type='MSELoss')
 optimizer = dict(type="Adam", lr=0.001)
-act = dict(type='QNet', state_dim=82, action_dim=3, dims=(64, 32), explore_rate=0.25)
+act = dict(type='QNet', state_dim=82, action_dim=3, dims=(64, 64), explore_rate=0.25)
 cri = None

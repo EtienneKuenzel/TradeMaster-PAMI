@@ -26,47 +26,42 @@ set_seed(2023)
 
 
 parser = argparse.ArgumentParser(description='Download Alpaca Datasets')
-parser.add_argument("--config", default=osp.join(ROOT,"Trademaster",  "configs", "portfolio_management", "high_frequency_trading_BTC_dqn_dqn_adam_mse.py"),
-                    help="download datasets config file path")
+parser.add_argument("--config", default=osp.join(ROOT,"Trademaster",  "configs", "algorithmic_trading", "algorithmic_trading_dj30_dqn_dqn_adam_mse.py"))
 parser.add_argument("--task_name", type=str, default="train")
-args, _ = parser.parse_known_args()
 
+args, _ = parser.parse_known_args()
 cfg = Config.fromfile(args.config)
 task_name = args.task_name
 cfg = replace_cfg_vals(cfg)
 dataset = build_dataset(cfg)
 
-train_environment = build_environment(cfg, default_args=dict(dataset=dataset, task="train"))
 valid_environment = build_environment(cfg, default_args=dict(dataset=dataset, task="valid"))
 test_environment = build_environment(cfg, default_args=dict(dataset=dataset, task="test"))
+train_environment = build_environment(cfg, default_args=dict(dataset=dataset, task="train"))
 train_environment.df.head()
 
-action_dim = train_environment.action_dim # 29
-state_dim = train_environment.state_dim # 11
-input_dim = len(train_environment.tech_indicator_list)
-time_steps = train_environment.time_steps
-print(train_environment)
-cfg.act.update(dict(input_dim=input_dim, time_steps=time_steps))
-cfg.cri.update(dict(input_dim=input_dim, action_dim= action_dim, time_steps=time_steps))
+action_dim = train_environment.action_dim
+state_dim = train_environment.state_dim
 
+cfg.act.update(dict(action_dim=action_dim, state_dim=state_dim))
 act = build_net(cfg.act)
-cri = build_net(cfg.cri)
 act_optimizer = build_optimizer(cfg, default_args=dict(params=act.parameters()))
-cri_optimizer = build_optimizer(cfg, default_args=dict(params=cri.parameters()))
+if cfg.cri:
+    cfg.cri.update(dict(action_dim=action_dim, state_dim=state_dim))
+    cri = build_net(cfg.cri)
+    cri_optimizer = build_optimizer(cfg, default_args=dict(params=cri.parameters()))
+else:
+    cri = None
+    cri_optimizer = None
 
 criterion = build_loss(cfg)
-transition = build_transition(cfg)
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-agent = build_agent(cfg, default_args=dict(action_dim=action_dim,state_dim=state_dim,time_steps = time_steps,act=act,cri=cri,act_optimizer=act_optimizer,cri_optimizer = cri_optimizer,criterion=criterion,transition = transition,device = device))
-
+agent = build_agent(cfg,default_args=dict(action_dim=action_dim,state_dim=state_dim,act=act,cri=cri,act_optimizer=act_optimizer,cri_optimizer=cri_optimizer,criterion=criterion,device=device))
 trainer = build_trainer(cfg, default_args=dict(train_environment=train_environment,valid_environment=valid_environment,test_environment=test_environment,agent=agent,device=device))
-work_dir = os.path.join(ROOT, cfg.trainer.work_dir)
 
-if not os.path.exists(work_dir):
-    os.makedirs(work_dir)
-cfg.dump(osp.join(work_dir, osp.basename(args.config)))
 
 trainer.train_and_valid()
+trainer.test()
+plot(trainer.test_environment.save_asset_memory(),alg="Deepscalper")
 
-trainer.test();
-plot(trainer.test_environment.save_asset_memory(),alg="EIIE")
+

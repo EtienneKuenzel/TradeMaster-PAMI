@@ -25,6 +25,7 @@ we remove the covarriance term in the state because it does not fit our algorith
 class PortfolioManagementEnvironment(Environments):
     def __init__(self, config):
         super(PortfolioManagementEnvironment, self).__init__()
+        print("aaaaaa")
         self.dataset = get_attr(config, "dataset", None)
         self.task = get_attr(config, "task", "train")
         self.day = 0
