@@ -21,7 +21,7 @@ batch_size = 512
 data = dict(
     type='AlgorithmicTradingDataset',
     data_path='data/algorithmic_trading/BTC',
-    train_path='data/algorithmic_trading/BTC/BTC_smooth_exp_avg/BTC_train_exponantial_annealing.csv',
+    train_path='data/algorithmic_trading/BTC/train.csv',
     valid_path='data/algorithmic_trading/BTC/valid.csv',
     test_path='data/algorithmic_trading/BTC/test.csv',
     tech_indicator_list=[
@@ -47,7 +47,7 @@ agent = dict(
 )
 trainer = dict(
     type='AlgorithmicTradingTrainer',
-    epochs=200,
+    epochs=100,
     work_dir=work_dir,
     seeds_list=(42, ),
     batch_size=batch_size,

@@ -269,7 +269,7 @@ class AlgorithmicTradingTrainer(Trainer):
         )
         return np.max(valid_score_list)
 
-    def test(self):
+    def test(self, string):
 
         load_best_model(self.checkpoints_path, save=self.agent.get_save(), is_train=False)
 
@@ -289,7 +289,7 @@ class AlgorithmicTradingTrainer(Trainer):
             episode_reward_sum += reward
             arrayday.append(self.test_environment.day)
             if done:
-                # print("Test Best Episode Reward Sum: {:04f}".format(episode_reward_sum))
+                #print("Test Best Episode Reward Sum: {:04f}".format(episode_reward_sum))
                 plot_metric_against_baseline(total_asset=save_dict['total_assets'],
                                              buy_and_hold=save_dict['buy_and_hold_assets'],
                                              alg='Deepscalper', task='test', color='darkcyan', save_dir=self.work_dir)
@@ -304,8 +304,8 @@ class AlgorithmicTradingTrainer(Trainer):
         df["total assets"] = assets
         df["day"] = arrayday
 
-        df.to_csv(os.path.join(self.work_dir, "test_result.csv"), index=False)
-        return daily_return
+        df.to_csv(os.path.join(self.work_dir, "test_result_"+ string +".csv"), index=False)
+        return episode_reward_sum
 
     def test_with_customize_policy(self,policy,customize_policy_id):
 
