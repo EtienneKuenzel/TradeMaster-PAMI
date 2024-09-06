@@ -94,7 +94,7 @@ class AlgorithmicTradingTrainer(Trainer):
         if not os.path.exists(self.checkpoints_path):
             os.makedirs(self.checkpoints_path, exist_ok=True)
 
-    def train_and_valid(self):
+    def train_and_valid(self, string):
 
         '''init agent.last_state'''
         state = self.train_environment.reset()
@@ -131,13 +131,11 @@ class AlgorithmicTradingTrainer(Trainer):
         print("Train Episode: [{}/{}]".format(epoch, self.epochs))
         while True:
             buffer_items = self.agent.explore_env(self.train_environment, self.horizon_len)
-            if self.if_off_policy:
-                buffer.update(buffer_items)
-            else:
-                buffer[:] = buffer_items
+            print(self.horizon_len)
+            if self.if_off_policy: buffer.update(buffer_items)
+            else: buffer[:] = buffer_items
 
             torch.set_grad_enabled(True)
-            logging_tuple = self.agent.update_net(buffer)
             torch.set_grad_enabled(False)
 
             if torch.mean(buffer_items.undone) < 1.0:
@@ -152,22 +150,23 @@ class AlgorithmicTradingTrainer(Trainer):
                     action = tensor_action.detach().cpu().numpy()[
                         0]  # not need detach(), because using torch.no_grad() outside
                     state, reward, done, save_dict = self.valid_environment.step(action)
+
                     episode_reward_sum += reward
-                    if done:
-                        #print("Valid Episode Reward Sum: {:04f}".format(episode_reward_sum))
-                        break
+                    if done: break
                 valid_score_list.append(episode_reward_sum)
                 save_dict_list.append(save_dict)
                 return_rate_list.append(save_dict['return_rate'])
 
-                save_model(self.checkpoints_path,
-                           epoch=epoch,
-                           save=self.agent.get_save())
+                save_model(self.checkpoints_path,epoch=epoch,save=self.agent.get_save())
                 epoch += 1
                 if epoch <= self.epochs:
                     print("Train Episode: [{}/{}]".format(epoch, self.epochs))
 
             if epoch > self.epochs:
+                df = pd.DataFrame()
+                df["reward"] = valid_score_list
+                df["total assets"] = return_rate_list
+                df.to_csv(os.path.join(self.work_dir, "valid_result_" + string + ".csv"), index=False)
                 break
 
         # find the best epoch base on return_rate instead of reward sum

@@ -17,7 +17,7 @@ _base_ = [
     f"../_base_/nets/{net_name}.py",
 ]
 
-batch_size = 512
+batch_size = 128
 data = dict(
     type='AlgorithmicTradingDataset',
     data_path='data/algorithmic_trading/BTC',
@@ -39,19 +39,19 @@ agent = dict(
     max_step=12345,
     reward_scale=1,
     repeat_times=1,
-    gamma=0.9,
+    gamma=0.8803679826789824,
     batch_size=batch_size,
     clip_grad_norm=3.0,
-    soft_update_tau=0,
+    soft_update_tau=0.032015664412176924,
     state_value_tau=0.005
 )
 trainer = dict(
     type='AlgorithmicTradingTrainer',
-    epochs=100,
+    epochs=5 00,
     work_dir=work_dir,
     seeds_list=(42, ),
     batch_size=batch_size,
-    horizon_len= 128,
+    horizon_len= 220,
     buffer_size=1000000.0,
     num_threads=8,
     if_remove=False,
@@ -61,6 +61,6 @@ trainer = dict(
     if_over_write=False,
     if_save_buffer=False,)
 loss = dict(type='MSELoss')
-optimizer = dict(type="Adam", lr=0.001)
-act = dict(type='QNet', state_dim=82, action_dim=3, dims=(64, 64), explore_rate=0.25)
+optimizer = dict(type="Adam", lr=0.001 )#lr=0.030585365133900682)
+act = dict(type='QNet', state_dim=82, action_dim=3, dims=(64, 32), explore_rate=0.25)
 cri = None
