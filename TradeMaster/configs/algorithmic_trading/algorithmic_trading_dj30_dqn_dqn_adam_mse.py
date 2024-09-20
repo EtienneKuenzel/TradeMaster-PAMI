@@ -21,9 +21,9 @@ batch_size = 128
 data = dict(
     type='AlgorithmicTradingDataset',
     data_path='data/algorithmic_trading/BTC',
-    train_path='data/algorithmic_trading/BTC/train.csv',
+    train_path='data/algorithmic_trading/BTC/pam.csv',
     valid_path='data/algorithmic_trading/BTC/valid.csv',
-    test_path='data/algorithmic_trading/BTC/test.csv',
+    test_path='data/algorithmic_trading/BTC/test_4.csv',
     tech_indicator_list=[
         'high', 'low', 'open', 'close', 'adjcp', 'zopen', 'zhigh', 'zlow',
         'zadjcp', 'zclose', 'zd_5', 'zd_10', 'zd_15', 'zd_20', 'zd_25', 'zd_30'
@@ -47,11 +47,11 @@ agent = dict(
 )
 trainer = dict(
     type='AlgorithmicTradingTrainer',
-    epochs=5 00,
+    epochs=1,
     work_dir=work_dir,
-    seeds_list=(42, ),
+    seeds_list=(4, ),
     batch_size=batch_size,
-    horizon_len= 220,
+    horizon_len= 120,
     buffer_size=1000000.0,
     num_threads=8,
     if_remove=False,
@@ -61,6 +61,6 @@ trainer = dict(
     if_over_write=False,
     if_save_buffer=False,)
 loss = dict(type='MSELoss')
-optimizer = dict(type="Adam", lr=0.001 )#lr=0.030585365133900682)
-act = dict(type='QNet', state_dim=82, action_dim=3, dims=(64, 32), explore_rate=0.25)
+optimizer = dict(type="Adam", lr=0.001)
+act = dict(type='QNet', state_dim=82, action_dim=3, dims=(64, 64), explore_rate=0.25)
 cri = None

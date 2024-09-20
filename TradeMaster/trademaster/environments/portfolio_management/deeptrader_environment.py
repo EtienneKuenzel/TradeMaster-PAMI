@@ -20,8 +20,8 @@ class PortfolioManagementDeepTraderEnvironment(Environments):
 
         self.dataset = get_attr(kwargs, "dataset", None)
         self.task = get_attr(kwargs, "task", "train")
-        self.timesteps = get_attr(self.dataset, "timesteps", 10)
-        self.day = self.timesteps - 1
+        timesteps = get_attr(self.dataset, "timesteps", 10)
+        self.day = timesteps - 1
 
         self.df_path = None
         if self.task.startswith("train"):
@@ -46,7 +46,7 @@ class PortfolioManagementDeepTraderEnvironment(Environments):
         self.stock_dim = len(self.df.tic.unique())
         self.state_space_shape = self.stock_dim
         self.action_space_shape = self.stock_dim
-        self.timesteps = self.timesteps
+        self.timesteps = timesteps
 
         self.action_space = spaces.Box(low=-5,
                                        high=5,

@@ -15,12 +15,12 @@ from collections import OrderedDict
 import pickle
 import os.path as osp
 
+
 @ENVIRONMENTS.register_module()
 class PortfolioManagementEIIEEnvironment(Environments):
     def __init__(self, **kwargs):
-
         super(PortfolioManagementEIIEEnvironment, self).__init__()
-        self.a = 0
+
         self.dataset = get_attr(kwargs, "dataset", None)
         self.task = get_attr(kwargs, "task", "train")
         self.test_dynamic=int(get_attr(kwargs, "test_dynamic", "-1"))
@@ -50,7 +50,6 @@ class PortfolioManagementEIIEEnvironment(Environments):
             self.end_date = self.df.loc[:, 'date'].iloc[-1]
         else:
             self.df = pd.read_csv(self.df_path, index_col=0)
-            print(len(self.df.index.unique()))
 
         self.stock_dim = len(self.df.tic.unique())
         self.state_space_shape = self.stock_dim

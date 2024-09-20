@@ -19,7 +19,7 @@ from trademaster.utils import get_attr, GeneralReplayBuffer, get_optim_param
 class PortfolioManagementEIIE(AgentBase):
     def __init__(self, **kwargs):
         super(PortfolioManagementEIIE, self).__init__()
-        print("AAAAAAAAAAAAAAAAA")
+
         self.num_envs = int(get_attr(kwargs, "num_envs", 1))
         self.device = get_attr(kwargs, "device", torch.device(f"cuda:0" if torch.cuda.is_available() else "cpu"))
         self.max_step = get_attr(kwargs, "max_step",

@@ -121,7 +121,7 @@ class PortfolioManagementDeepTrader(AgentBase):
 
         self.act = get_attr(kwargs, "act", None).to(self.device)
         self.cri = get_attr(kwargs, "cri", None).to(self.device)
-        #self.market = get_attr(kwargs, "market", None).to(self.device)
+        self.market = get_attr(kwargs, "market", None).to(self.device)
 
         self.act_optimizer = get_attr(kwargs, "act_optimizer", None)
         self.cri_optimizer = get_attr(kwargs, "cri_optimizer", None)
