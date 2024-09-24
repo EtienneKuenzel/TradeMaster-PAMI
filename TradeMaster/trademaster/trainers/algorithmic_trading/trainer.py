@@ -277,20 +277,20 @@ class AlgorithmicTradingTrainer(Trainer):
         state = self.test_environment.reset()
 
         episode_reward_sum = 0
+        a=0
         while True:
             tensor_state = torch.as_tensor(state, dtype=torch.float32, device=self.device).unsqueeze(0)
             tensor_action = self.agent.act(tensor_state)
             if self.if_discrete:
                 tensor_action = tensor_action.argmax(dim=1)
-            action = tensor_action.detach().cpu().numpy()[
-                0]  # not need detach(), because using torch.no_grad() outside
+            action = tensor_action.detach().cpu().numpy()[0]  # not need detach(), because using torch.no_grad() outside
+            print(action)
             state, reward, done, save_dict = self.test_environment.step(action)
             episode_reward_sum += reward
+            a+=1
+            print(a)
             if done:
                 # print("Test Best Episode Reward Sum: {:04f}".format(episode_reward_sum))
-                plot_metric_against_baseline(total_asset=save_dict['total_assets'],
-                                             buy_and_hold=save_dict['buy_and_hold_assets'],
-                                             alg='Deepscalper', task='test', color='darkcyan', save_dir=self.work_dir)
                 break
 
         rewards = self.test_environment.save_asset_memory()
@@ -300,7 +300,7 @@ class AlgorithmicTradingTrainer(Trainer):
         df = pd.DataFrame()
         df["daily_return"] = daily_return
         df["total assets"] = assets
-        df.to_csv(os.path.join(self.work_dir, "test_result.csv"), index=False)
+        df.to_csv(os.path.join(self.work_dir, "p=9.csv"), index=False)
         return daily_return
 
     def test_with_customize_policy(self,policy,customize_policy_id):

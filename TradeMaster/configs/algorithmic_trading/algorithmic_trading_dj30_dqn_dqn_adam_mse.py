@@ -21,9 +21,9 @@ batch_size = 128
 data = dict(
     type='AlgorithmicTradingDataset',
     data_path='data/algorithmic_trading/BTC',
-    train_path='data/algorithmic_trading/BTC/pam.csv',
-    valid_path='data/algorithmic_trading/BTC/valid.csv',
-    test_path='data/algorithmic_trading/BTC/test_4.csv',
+    train_path='data/algorithmic_trading/BTC/movavg.csv',
+    valid_path='data/algorithmic_trading/BTC/test_4_doubled.csv',
+    test_path='data/algorithmic_trading/BTC/test_1.csv',
     tech_indicator_list=[
         'high', 'low', 'open', 'close', 'adjcp', 'zopen', 'zhigh', 'zlow',
         'zadjcp', 'zclose', 'zd_5', 'zd_10', 'zd_15', 'zd_20', 'zd_25', 'zd_30'
@@ -42,7 +42,7 @@ agent = dict(
     gamma=0.8803679826789824,
     batch_size=batch_size,
     clip_grad_norm=3.0,
-    soft_update_tau=0.032015664412176924,
+    soft_update_tau=0.005,
     state_value_tau=0.005
 )
 trainer = dict(
@@ -61,6 +61,6 @@ trainer = dict(
     if_over_write=False,
     if_save_buffer=False,)
 loss = dict(type='MSELoss')
-optimizer = dict(type="Adam", lr=0.001)
-act = dict(type='QNet', state_dim=82, action_dim=3, dims=(64, 64), explore_rate=0.25)
+optimizer = dict(type="Adam", lr=0.01)
+act = dict(type='QNet', state_dim=82, action_dim=9, dims=(64, 64), explore_rate=0.5)
 cri = None
