@@ -1,5 +1,5 @@
 # PAMI: Data Augmentation for Financial Reinforcement Learning
--This is a Repository of the Pattern-Analysis  and Machine-Intelligence Course(Summer 2024)
+-This is a Repository of the Pattern-Analysis  and Machine-Intelligence Course(Summer 2024)<br/>
 -We used [TradeMaster](https://github.com/TradeMaster-NTU/TradeMaster) as our Simulator
 
 ## Problems with TradeMaster ##
